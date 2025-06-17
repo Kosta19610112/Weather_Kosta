@@ -108,19 +108,21 @@ async def main():
     # Запускаем веб-сервер
     return app
 
+#if __name__ == '__main__':
+#    if os.getenv('RENDER'):
+        # Настройка для Render
+#        app = asyncio.run(main())
+#        web.run_app(app, host="0.0.0.0", port=10000)
+#    else:  
+        # Локальный запуск с polling
+#        asyncio.run(dp.start_polling(bot))
+        
+        
 if __name__ == '__main__':
     if os.getenv('RENDER'):
-        print('11111111111111111111')
-        
-        print('TOKEN = 8012034661:AAEcphkQKTw7cGDO37VbbcJHe999TtwF1Mk')
-        print('TOKEN = ', TOKEN)
-        print('API_KEY = 1f30db42752361354d4cf1f02835861e')
-        print('API_KEY = ', API_KEY)       
         # Настройка для Render
         app = asyncio.run(main())
-        web.run_app(app, host="0.0.0.0", port=10000)
+        web.run_app(app, host="0.0.0.0", port=int(os.getenv("PORT", 10000)))
     else:
-        print('222222222222222222222')    
         # Локальный запуск с polling
         asyncio.run(dp.start_polling(bot))
-        
