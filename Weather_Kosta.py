@@ -1,5 +1,7 @@
+
+
 ###################################################################################
-import os                                                                         #
+import os
 import asyncio                                                                    #
 import requests                                                                   #
 from dotenv import load_dotenv                                                    #
@@ -20,11 +22,10 @@ WEBHOOK_PATH = "/webhook"                                                       
                                                                                   #
 ###################################################################################
 
-
-
 from datetime import datetime, timedelta
 
-CITIES = ['Москва', 'Санкт-Петербург', 'Рига', 'Севастополь']
+CITIES = ['Москва', 'Санкт-Петербург', 'Рига', 'Лос-Анджелес', 'Ницца', 'Лондон', 'Аликанте']
+
 
 def get_weather_report(city):
     output = f"=== {city} ===\n"
@@ -84,7 +85,7 @@ async def handle_start(message: Message):
             await message.answer(f"Ошибка при получении данных по {city}: {e}")
 
 
-# === WEBHOOK ===  #######################################################################
+# === WEBHOOK ===
      
 async def on_startup(bot: Bot):
     await bot.set_webhook(f"{WEBHOOK_URL}{WEBHOOK_PATH}")
@@ -108,21 +109,12 @@ async def main():
     # Запускаем веб-сервер
     return app
 
-#if __name__ == '__main__':
-#    if os.getenv('RENDER'):
-        # Настройка для Render
-#        app = asyncio.run(main())
-#        web.run_app(app, host="0.0.0.0", port=10000)
-#    else:  
-        # Локальный запуск с polling
-#        asyncio.run(dp.start_polling(bot))
-        
-        
 if __name__ == '__main__':
     if os.getenv('RENDER'):
         # Настройка для Render
         app = asyncio.run(main())
-        web.run_app(app, host="0.0.0.0", port=int(os.getenv("PORT", 10000)))
-    else:
+        web.run_app(app, host="0.0.0.0", port=10000)
+    else:    
         # Локальный запуск с polling
         asyncio.run(dp.start_polling(bot))
+        
