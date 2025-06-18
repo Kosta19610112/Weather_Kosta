@@ -87,8 +87,19 @@ async def handle_start(message: Message):
 
 # === WEBHOOK ===
      
+
+
 async def on_startup(bot: Bot):
-    await bot.set_webhook(f"{WEBHOOK_URL}{WEBHOOK_PATH}")
+    print("Setting up webhook...")
+    webhook_url = f"{WEBHOOK_URL}{WEBHOOK_PATH}"
+    print(f"Webhook URL: {webhook_url}")
+    try:
+        await bot.set_webhook(webhook_url)
+        print(f"Webhook set successfully to {webhook_url}")
+    except Exception as e:
+        print(f"Failed to set webhook: {e}")
+
+
 
 async def main():
     # Настройка веб-приложения
