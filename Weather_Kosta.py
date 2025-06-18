@@ -1,3 +1,5 @@
+
+
 ###################################################################################
 import os
 import asyncio                                                                    #
@@ -22,23 +24,7 @@ WEBHOOK_PATH = "/webhook"                                                       
 
 from datetime import datetime, timedelta
 
-CITIES = ['Москва', 'Санкт-Петербург', 'Рига', 'Лос-Анджелес', 'Ницца', 'Лондон', 'Аликанте']
-
-
-# === WEBHOOK ===
-async def on_startup(bot: Bot):
-    print("Setting up webhook...")
-    try:
-        webhook_url = f"{WEBHOOK_URL}{WEBHOOK_PATH}"
-        print(f"Webhook URL: {webhook_url}")
-        await bot.set_webhook(webhook_url)
-        print(f"Webhook set successfully to {webhook_url}")
-    except Exception as e:
-        print(f"Failed to set webhook: {e}")
-
-
-# Регистрация функции on_startup                                                  #
-dp.startup.register(on_startup)                                                   #
+CITIES = ['Москва', 'Санкт-Петербург', 'Рига', 'Севастополь']
 
 
 def get_weather_report(city):
@@ -99,6 +85,22 @@ async def handle_start(message: Message):
             await message.answer(f"Ошибка при получении данных по {city}: {e}")
 
 
+# === WEBHOOK ===
+     
+
+
+async def on_startup(bot: Bot):
+    print("Setting up webhook...")
+    webhook_url = f"{WEBHOOK_URL}{WEBHOOK_PATH}"
+    print(f"Webhook URL: {webhook_url}")
+    try:
+        await bot.set_webhook(webhook_url)
+        print(f"Webhook set successfully to {webhook_url}")
+    except Exception as e:
+        print(f"Failed to set webhook: {e}")
+
+
+
 async def main():
     # Настройка веб-приложения
     app = web.Application()
@@ -118,13 +120,12 @@ async def main():
     # Запускаем веб-сервер
     return app
 
-
 if __name__ == '__main__':
     if os.getenv('RENDER'):
         # Настройка для Render
-        port = int(os.getenv("PORT", 10000))
         app = asyncio.run(main())
-        web.run_app(app, host="0.0.0.0", port=port)
+        web.run_app(app, host="0.0.0.0", port=10000)
     else:    
         # Локальный запуск с polling
         asyncio.run(dp.start_polling(bot))
+        
