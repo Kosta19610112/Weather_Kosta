@@ -1,7 +1,6 @@
 
-
 ###################################################################################
-import os
+import os                                                                         #
 import asyncio                                                                    #
 import requests                                                                   #
 from dotenv import load_dotenv                                                    #
@@ -22,10 +21,9 @@ WEBHOOK_PATH = "/webhook"                                                       
                                                                                   #
 ###################################################################################
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 CITIES = ['Москва', 'Санкт-Петербург', 'Рига', 'Севастополь']
-
 
 def get_weather_report(city):
     output = f"=== {city} ===\n"
@@ -37,7 +35,8 @@ def get_weather_report(city):
         desc = weather_resp['weather'][0]['description'].capitalize()
         temp = weather_resp['main']['temp']
         timezone_offset = weather_resp.get('timezone', 0)
-        local_time = datetime.utcnow() + timedelta(seconds=timezone_offset)
+        # Используем datetime.now(datetime.UTC) вместо datetime.utcnow()
+        local_time = datetime.now(timezone.utc) + timedelta(seconds=timezone_offset)
         time_str = local_time.strftime('%Y-%m-%d %H:%M')
         output += f"Местное время: {time_str}\n"
         output += f"Сейчас: {desc}, {temp}°C\n"
@@ -51,10 +50,10 @@ def get_weather_report(city):
         output += "\nПрогноз на завтра:\n"
         found = False
         timezone_offset = forecast_resp.get('city', {}).get('timezone', timezone_offset)
-        tomorrow_date = (datetime.utcnow() + timedelta(days=1)).date()
+        tomorrow_date = (datetime.now(timezone.utc) + timedelta(days=1)).date()
 
         for entry in forecast_resp['list']:
-            utc_dt = datetime.utcfromtimestamp(entry['dt'])
+            utc_dt = datetime.fromtimestamp(entry['dt'], tz=timezone.utc)
             local_dt = utc_dt + timedelta(seconds=timezone_offset)
 
             if local_dt.date() == tomorrow_date:
@@ -88,7 +87,6 @@ async def handle_start(message: Message):
 # === WEBHOOK ===
      
 
-
 async def on_startup(bot: Bot):
     print("Setting up webhook...")
     webhook_url = f"{WEBHOOK_URL}{WEBHOOK_PATH}"
@@ -98,7 +96,6 @@ async def on_startup(bot: Bot):
         print(f"Webhook set successfully to {webhook_url}")
     except Exception as e:
         print(f"Failed to set webhook: {e}")
-
 
 
 async def main():
