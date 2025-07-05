@@ -1,3 +1,0 @@
-curl https://api.telegram.org/bot8012034661:AAEcphkQKTw7cGDO37VbbcJHe999TtwF1Mk/getWebhookInfo 
-
-curl -X POST https://api.telegram.org/bot8012034661:AAEcphkQKTw7cGDO37VbbcJHe999TtwF1Mk/setWebhook -d "url=https://weather-kosta.onrender.com/webhook" 
